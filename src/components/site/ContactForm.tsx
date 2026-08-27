@@ -60,27 +60,42 @@ export function ContactForm() {
     setStatus("sending");
     setServerError("");
     try {
+      const payload = {
+        name: values.name.trim(),
+        email: values.email.trim(),
+        subject: values.subject.trim(),
+        message: values.message.trim(),
+      };
+
       const result = await send({
-        data: {
-          name: values.name.trim(),
-          email: values.email.trim(),
-          subject: values.subject.trim(),
-          message: values.message.trim(),
-          company,
-          elapsedMs: Date.now() - mountedAt.current,
-        },
+        data: { ...payload, company, elapsedMs: Date.now() - mountedAt.current },
       });
-      if (result.ok) {
-        setStatus("sent");
-        setValues(empty);
-      } else {
+      if (!result.ok) {
         setStatus("error");
         setServerError(result.error);
+        return;
       }
+
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name: payload.name,
+          from_email: payload.email,
+          reply_to: payload.email,
+          subject: payload.subject || "New message from your portfolio",
+          message: payload.message,
+        },
+        { publicKey: EMAILJS_PUBLIC_KEY },
+      );
+
+      setStatus("sent");
+      setValues(empty);
     } catch {
       setStatus("error");
       setServerError("Something went wrong. Please email me directly instead.");
     }
+
   }
 
   if (status === "sent") {
