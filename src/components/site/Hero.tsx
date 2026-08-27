@@ -1,5 +1,6 @@
 import { ArrowRight, MapPin, CircuitBoard } from "lucide-react";
-import portrait from "@/assets/mark-zebian.png";
+import portraitAsset from "@/assets/mark-zebian-headshot.jpg.asset.json";
+const portrait = portraitAsset.url;
 
 const chips = ["ROBOTICS", "AI", "CAD", "EMBEDDED SYSTEMS", "AUTOMATION"];
 
