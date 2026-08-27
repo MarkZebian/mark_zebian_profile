@@ -1,9 +1,15 @@
 import { useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import emailjs from "@emailjs/browser";
 
 import { submitContactMessage } from "@/lib/contact.functions";
 import { Reveal } from "./Reveal";
+
+const EMAILJS_SERVICE_ID = "service_6l0fp5s";
+const EMAILJS_TEMPLATE_ID = "template_sytycxm";
+const EMAILJS_PUBLIC_KEY = "RQ8zwt2K9RRkm9bRx";
+
 
 type Fields = { name: string; email: string; subject: string; message: string };
 type Errors = Partial<Record<keyof Fields, string>>;
