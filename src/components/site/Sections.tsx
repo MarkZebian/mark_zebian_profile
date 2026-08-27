@@ -25,6 +25,7 @@ import {
   Users,
 } from "lucide-react";
 import { Reveal, SectionHeading } from "./Reveal";
+import { ContactForm } from "./ContactForm";
 
 /* ---------------- About ---------------- */
 
@@ -621,15 +622,21 @@ export function Contact() {
           })}
         </div>
 
-        <Reveal className="mt-10 text-center">
-          <a
-            href="mailto:zebianmark@gmail.com?subject=Co-op%20Opportunity"
-            className="inline-flex items-center gap-2 rounded-md bg-gold px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-transform hover:-translate-y-0.5"
-          >
-            <Mail className="h-4 w-4" />
-            Get in Touch
-          </a>
-        </Reveal>
+        <div className="mt-12">
+          <Reveal className="mb-6 text-center">
+            <h3 className="font-display text-xl font-semibold text-foreground">
+              Send me a message
+            </h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Or email me directly at{" "}
+              <a href="mailto:zebianmark@gmail.com" className="text-gold hover:underline">
+                zebianmark@gmail.com
+              </a>
+            </p>
+          </Reveal>
+          <ContactForm />
+        </div>
+
       </div>
     </section>
   );
