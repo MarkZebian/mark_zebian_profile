@@ -7,7 +7,7 @@ import { submitContactMessage } from "@/lib/contact.functions";
 import { Reveal } from "./Reveal";
 
 const EMAILJS_SERVICE_ID = "service_6l0fp5s";
-const EMAILJS_TEMPLATE_ID = "template_sytycxm";
+const EMAILJS_TEMPLATE_ID = "template_c0bq97j";
 const EMAILJS_PUBLIC_KEY = "RQ8zwt2K9RRkm9bRx";
 
 
