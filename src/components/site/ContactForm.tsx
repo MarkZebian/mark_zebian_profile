@@ -1,9 +1,15 @@
 import { useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import emailjs from "@emailjs/browser";
 
 import { submitContactMessage } from "@/lib/contact.functions";
 import { Reveal } from "./Reveal";
+
+const EMAILJS_SERVICE_ID = "service_6l0fp5s";
+const EMAILJS_TEMPLATE_ID = "template_sytycxm";
+const EMAILJS_PUBLIC_KEY = "RQ8zwt2K9RRkm9bRx";
+
 
 type Fields = { name: string; email: string; subject: string; message: string };
 type Errors = Partial<Record<keyof Fields, string>>;
@@ -54,27 +60,42 @@ export function ContactForm() {
     setStatus("sending");
     setServerError("");
     try {
+      const payload = {
+        name: values.name.trim(),
+        email: values.email.trim(),
+        subject: values.subject.trim(),
+        message: values.message.trim(),
+      };
+
       const result = await send({
-        data: {
-          name: values.name.trim(),
-          email: values.email.trim(),
-          subject: values.subject.trim(),
-          message: values.message.trim(),
-          company,
-          elapsedMs: Date.now() - mountedAt.current,
-        },
+        data: { ...payload, company, elapsedMs: Date.now() - mountedAt.current },
       });
-      if (result.ok) {
-        setStatus("sent");
-        setValues(empty);
-      } else {
+      if (!result.ok) {
         setStatus("error");
         setServerError(result.error);
+        return;
       }
+
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name: payload.name,
+          from_email: payload.email,
+          reply_to: payload.email,
+          subject: payload.subject || "New message from your portfolio",
+          message: payload.message,
+        },
+        { publicKey: EMAILJS_PUBLIC_KEY },
+      );
+
+      setStatus("sent");
+      setValues(empty);
     } catch {
       setStatus("error");
       setServerError("Something went wrong. Please email me directly instead.");
     }
+
   }
 
   if (status === "sent") {
